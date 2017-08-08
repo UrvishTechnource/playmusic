@@ -1,0 +1,241 @@
+<?php /**
+ * Copyright © 2016 Trive (http://www.trive.digital/) All rights reserved.
+ */ 
+ob_start();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+ 
+
+$storeId=$storeManager->getStore()->getStoreId();
+
+
+$productCollection = $objectManager->create('Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
+
+
+$collection = $productCollection->create()->addAttributeToSelect('*');
+$collection->addStoreFilter()
+        ->joinField(
+            'qty_ordered',
+            'sales_bestsellers_aggregated_yearly',
+            'qty_ordered',
+            'product_id=entity_id',
+            'at_qty_ordered.store_id='.$storeId,
+            'at_qty_ordered.qty_ordered > 0',
+            'left'
+        )->setPageSize(8)->setCurPage(1);
+
+$prodArr=array();
+$parentCat=array();
+$parentCatId=array();
+$allCategory=array();
+$i=0;
+foreach($collection as $c){
+
+            $arr=$c->getCategoryIds();
+$categoryFactory = $objectManager->create('Magento\Catalog\Model\Category');
+foreach($arr as $a){
+array_push($allCategory,$a);
+$categories = $categoryFactory->load($a);
+
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+
+	if($categories->getLevel()==2)
+	{
+		$t=array();
+		if(!in_array($categories->getName(),$parentCat) && count($parentCat)<=2)
+		{
+
+			array_push($parentCat,$categories->getName());
+			$subcats = $categories->getChildrenCategories();
+			$subcatId=array();
+                        foreach ($subcats as $subcat) {
+			    $_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+			    $_outputhelper = $this->helper('Magento\Catalog\Helper\Output');
+			    array_push($subcatId,$subcat->getId());
+		        }
+                     $t[$a]=$subcatId;
+			$parentCatId[$i++]=$t;
+		}
+
+	}
+
+
+}
+
+}
+$allCategory=array_unique($allCategory);
+
+$firstDropdown=key($parentCatId[0]);
+
+
+echo $_category = $objectManager->create('Magento\Catalog\Model\Category')->load($firstDropdown)->getName();
+?>
+
+<?php 
+if(isset($_POST['btnsubmit']))
+{
+$_SESSION['mostPopularCat']=array($_POST['firstDropdown']);
+?>
+
+<form method="post" id="firstform" >
+<input type="hidden" name="hidfirstdrop" value="<?php echo $firstDropdown;?>">
+<select name="firstDropdown" id="firstDropdown" onchange="ajaxcall(this)">
+<?php
+$j=0;
+
+foreach($parentCatId[0][$firstDropdown] as $pid){
+if(in_array($pid,$allCategory)){
+$_categoryname = $objectManager->create('Magento\Catalog\Model\Category')->load($pid)->getName();
+if($j==0 && !isset($_SESSION['mostPopularCat']))
+$_SESSION['mostPopularCat']=array($pid);
+
+?>
+<option value="<?php echo $pid;?>" <?php if(isset($_SESSION['mostPopularCat']) && in_array($pid,$_SESSION['mostPopularCat'])){echo "selected=selected";}?> ><?php echo $_categoryname;?></option>
+<?php
+}
+}
+
+?>
+</select>
+<input type="submit" name="btnsubmit" id="btnsubmit" style="visibility:hidden" value="submit">
+</form>
+
+<?php
+
+echo $this->getLayout()->createBlock("Trive\Revo\Block\Slider\Items")->setSliderId("2")->toHtml();
+
+}
+elseif(isset($parentCatId[0])){
+?>
+<form method="post" id="firstform" >
+<input type="hidden" name="hidfirstdrop" value="<?php echo $firstDropdown;?>">
+<select name="firstDropdown" id="firstDropdown" onchange="ajaxcall(this)">
+<?php
+$j=0;
+
+foreach($parentCatId[0][$firstDropdown] as $pid){
+if(in_array($pid,$allCategory)){
+$_categoryname = $objectManager->create('Magento\Catalog\Model\Category')->load($pid)->getName();
+if($j==0 && !isset($_SESSION['mostPopularCat']))
+$_SESSION['mostPopularCat']=array($pid);
+
+?>
+<option value="<?php echo $pid;?>" <?php if(isset($_SESSION['mostPopularCat']) && in_array($pid,$_SESSION['mostPopularCat'])){echo "selected=selected";}?> ><?php echo $_categoryname;?></option>
+<?php
+}
+}
+
+?>
+</select>
+<input type="submit" name="btnsubmit" id="btnsubmit" style="visibility:hidden" value="submit">
+</form>
+<?php
+
+echo $this->getLayout()->createBlock("Trive\Revo\Block\Slider\Items")->setSliderId("2")->toHtml();
+}
+?>
+
+
+
+<!-- Second Category-->
+<?php 
+
+if(isset($parentCatId[1])){
+$secondDropdown=key($parentCatId[1]);
+echo $_category = $objectManager->create('Magento\Catalog\Model\Category')->load($secondDropdown)->getName();
+?>
+
+<?php }?>
+
+
+
+
+
+<?php 
+if(isset($_POST['btnsubmit2']))
+{
+$_SESSION['mostPopularCat2']=array($_POST['firstDropdown2']);
+?>
+<form method="post" id="firstform2">
+<input type="hidden" name="hidfirstdrop2" value="<?php echo $secondDropdown;?>">
+<select name="firstDropdown2" id="firstDropdown2" onchange="ajaxcall2(this)">
+<?php
+$j=0;
+foreach($parentCatId[1][$secondDropdown] as $pid){
+if(in_array($pid,$allCategory)){
+$_categoryname = $objectManager->create('Magento\Catalog\Model\Category')->load($pid)->getName();
+if($j==0 && !isset($_SESSION['mostPopularCat2']))
+$_SESSION['mostPopularCat2']=array($pid);
+
+?>
+<option value="<?php echo $pid;?>" <?php if(isset($_POST['firstDropdown2']) && $pid==$_POST['firstDropdown2']){echo "selected=selected";}?> ><?php echo $_categoryname;?></option>
+<?php
+}
+}
+
+?>
+</select>
+<input type="submit" name="btnsubmit2" id="btnsubmit2" style="visibility:hidden" value="submit">
+</form>
+
+<?php
+echo $this->getLayout()->createBlock("Trive\Revo\Block\Slider\Items")->setSliderId("3")->toHtml();
+
+}
+elseif(isset($parentCatId[1]))
+{
+?>
+<form method="post" id="firstform2">
+<input type="hidden" name="hidfirstdrop2" value="<?php echo $secondDropdown;?>">
+<select name="firstDropdown2" id="firstDropdown2" onchange="ajaxcall2(this)">
+<?php
+$j=0;
+foreach($parentCatId[1][$secondDropdown] as $pid){
+if(in_array($pid,$allCategory)){
+$_categoryname = $objectManager->create('Magento\Catalog\Model\Category')->load($pid)->getName();
+if($j==0 && !isset($_SESSION['mostPopularCat2']))
+$_SESSION['mostPopularCat2']=array($pid);
+
+?>
+<option value="<?php echo $pid;?>" <?php if(isset($_SESSION['mostPopularCat2']) && in_array($pid,$_SESSION['mostPopularCat2'])){echo "selected=selected";}?> ><?php echo $_categoryname;?></option>
+<?php
+}
+}
+
+?>
+</select>
+<input type="submit" name="btnsubmit2" id="btnsubmit2" style="visibility:hidden" value="submit">
+</form>
+<?php
+echo $this->getLayout()->createBlock("Trive\Revo\Block\Slider\Items")->setSliderId("3")->toHtml();
+}
+?>
+
+
+
+
+<script>
+
+
+function ajaxcall(th)
+{
+
+jQuery("#btnsubmit").trigger('click');
+
+
+}
+
+function ajaxcall2(th)
+{
+
+jQuery("#btnsubmit2").trigger('click');
+
+
+}
+
+
+</script>
+
+
+

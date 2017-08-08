@@ -1,0 +1,27 @@
+<div class="footer_links f3" style="float: left;">
+Products
+
+<?php
+$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();        
+ 
+$appState = $objectManager->get('\Magento\Framework\App\State');
+//$appState->setAreaCode('frontend');
+ 
+$categoryCollection = $objectManager->get('\Magento\Catalog\Model\ResourceModel\Category\CollectionFactory');
+$categories = $categoryCollection->create();
+$categories->addAttributeToSelect('*');
+ $categories->addAttributeToFilter('is_active', 1);
+$categories->addAttributeToFilter('level','2');
+ 
+
+ 
+foreach ($categories as $category) {
+    
+    ?>
+<p><a href="<?php echo $category->getUrl()?>"><?php echo $category->getName() ?></a></p>
+    <?php
+    
+}
+?>
+
+</div>

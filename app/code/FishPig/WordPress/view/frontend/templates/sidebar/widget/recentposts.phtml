@@ -1,0 +1,55 @@
+<?php
+/**
+ * @category    Fishpig
+ * @package     Fishpig_Wordpress
+ * @license     http://fishpig.co.uk/license.txt
+ * @author      Ben Tideswell <help@fishpig.co.uk>
+ */
+?>
+
+<?php
+
+
+$data=file_get_contents($this->getBaseUrl()."wp/index.php/wp-json/service/posts3");
+$dataArr=json_decode($data,true);
+
+if(count($dataArr)>0)
+{
+
+echo "<h3>From The Blog</h3>";
+
+foreach($dataArr as $arr)
+{
+
+$url=$arr['url'];
+
+?>
+<div class="recent-blog " style="float:left">
+<?php
+if($arr['featured_image']!=false){
+echo "<a href='".$url."'><img src='".$arr['featured_image']."'/></a>";
+}
+
+$originalDate = $arr['date'];
+$newDate = date("d F,Y", strtotime($originalDate));
+echo "<p>".$newDate."</p>";
+
+echo "<h4><a href='".$url."'>".$arr['title']."</a></h4>";
+
+if(strlen($arr['text'])>70)
+{
+$desc=substr($arr['text'],0,70)."...";
+} 
+else{
+$desc=$arr['text'];
+}
+echo "<p>".$desc."</p>";
+
+echo "<a href='".$url."'>Read More...</a>";
+
+?>
+</div>
+<?php
+}
+}
+?>
