@@ -108,7 +108,7 @@
                 <ol class="product-items <?php /* @escapeNotVerified */ echo $type; ?> hotdeals-item-ul">
                     <?php $iterator = 1; ?>
 
- <div class="owl-carousel-products">
+
 
                     <?php foreach ($items as $_item): ?>
                         <?php
@@ -205,7 +205,7 @@
                         </div>
                         <?php echo($iterator == count($items)+1) ? '</li>' : '' ?>
                     <?php endforeach ?>
-</div>
+
                 </ol>
             </div>
             <?php echo $block->getPagerHtml() ?>
@@ -213,14 +213,4 @@
     </div>
 <?php endif;?>
 
-<script>
-    require(['jquery', 'owl_carousel'],
-        function ($) {
-            $(document).ready(function(){
-		$(".owl-carousel-products").owlCarousel({
-		dots:false,
-		nav:true
-		});
-	     });
-        });
-</script>
+

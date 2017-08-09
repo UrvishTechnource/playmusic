@@ -55,6 +55,38 @@ $breakpoint   = $this->getBreakpointConfiguration();
                         <?php if($showPrice) : ?>
                             <?php /* @escapeNotVerified */ echo $this->getProductPrice($product); ?>
                         <?php endif; ?>
+<div class="hotdeals-review">
+                                <?php echo $block->getReviewsSummaryHtml($product, 'short',true); ?>
+                                </div>
+ <?php 
+/*$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$reviewFactory = $objectManager->create('Magento\Review\Model\Review');
+
+$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+ 
+
+$storeId=$storeManager->getStore()->getStoreId();
+
+
+$reviewFactory->getEntitySummary($product, $storeId);
+
+
+$_ratingSummary = $product->getRatingSummary()->getRatingSummary();
+        $_reviewCount = $_item->getRatingSummary()->getReviewsCount();
+
+ if($_ratingSummary){ ?>
+    <div class="product-reviews-summary short">
+        <div class="rating-summary">
+            <div title="<?php echo (int)$_ratingSummary; ?>%" class="rating-result">
+                <span style="width:<?php echo (int)$_ratingSummary; ?>%"><span><?php echo (int)$_ratingSummary; ?>%</span></span>
+            </div>
+        </div>
+<!--        <div class="reviews-actions">
+            <?php echo __('('.$_reviewCount.')'); ?>
+        </div>-->
+    </div>
+    <?php }*/ ?>
+
                         <div class="product-item-inner">
                             <div class="product actions product-item-actions">
 
