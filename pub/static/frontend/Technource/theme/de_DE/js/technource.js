@@ -1,8 +1,14 @@
 
     require([
         'jquery',
-//	'js/owl.carousel'	
         ], function ($) {
+	$(document).ready(function(){
+	$(".become_fan").click(function(){
+
+	 	$("#fb-like").show(); 
+		$("#sidebar-social-fan").hide();
+	});
+	});
 	hometabs=function (curId)
 	{
 		//$(".tabs-content").css('display','none');
@@ -14,4 +20,6 @@
 	$(window).load(function(){
 	hometabs('tabs-1');
 	});
+
+
     });
