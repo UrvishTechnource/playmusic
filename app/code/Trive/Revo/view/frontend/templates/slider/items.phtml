@@ -55,6 +55,35 @@
                                 <?php echo $block->getReviewsSummaryHtml($_item, $templateType) ?>
                             <?php endif; ?>
 
+
+ <?php 
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$reviewFactory = $objectManager->create('Magento\Review\Model\Review');
+
+$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+$storeId=$storeManager->getStore()->getStoreId();
+$reviewFactory->getEntitySummary($_item, $storeId);
+
+$_ratingSummary = $_item->getRatingSummary()->getRatingSummary();
+//var_dump($ratingSummary);
+
+        //$_ratingSummary = $block->getRatingSummary($product);
+        $_reviewCount = $_item->getRatingSummary()->getReviewsCount();
+
+ if($_ratingSummary){ ?>
+    <div class="product-reviews-summary short">
+        <div class="rating-summary">
+            <div title="<?php echo (int)$_ratingSummary; ?>%" class="rating-result">
+                <span style="width:<?php echo (int)$_ratingSummary; ?>%"><span><?php echo (int)$_ratingSummary; ?>%</span></span>
+            </div>
+        </div>
+<!--        <div class="reviews-actions">
+            <?php echo __('('.$_reviewCount.')'); ?>
+        </div>-->
+    </div>
+    <?php } ?>
+
+
                             <?php echo $block->getRevoProductDetailsHtml($_item); ?>
                           
 

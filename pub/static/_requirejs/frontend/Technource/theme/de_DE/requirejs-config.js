@@ -671,17 +671,6 @@ var config = {
 };
 require.config(config);
 })();
-(function() {
-var config = {
-    map: {
-        '*' : {
-            'Mageplaza_Productslider/js/owl.carousel' : 'Mageplaza_Productslider/js/owl.carousel',
-            'Mageplaza_Productslider/js/owl.carousel.min' : 'Mageplaza_Productslider/js/owl.carousel.min'
-        }
-    }
-};
-require.config(config);
-})();
 
 
 

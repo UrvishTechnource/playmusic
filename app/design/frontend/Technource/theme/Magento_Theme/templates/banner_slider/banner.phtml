@@ -1,0 +1,60 @@
+  <style type="text/css">
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+.slider { display: none; }
+.slider.slick-initialized { display: block; }
+
+    .slider {
+        width: 100%;
+       /* margin: 100px auto;*/
+    }
+
+    .slick-slide {
+      margin: 0px 2px;
+    }
+
+    .slick-slide img {
+      width: 100%;
+    }
+
+    .slick-prev:before,
+    .slick-next:before {
+        color: black;
+    }
+  </style>
+
+  <!--<section class="center slider">
+    <div>
+      <img src="http://placehold.it/900x500?text=1">
+    </div>
+    <div>
+      <img src="http://placehold.it/900x500?text=2">
+    </div>
+    <div>
+      <img src="http://placehold.it/900x500?text=3">
+    </div>
+    <div>
+      <img src="http://placehold.it/900x500?text=4">
+    </div>
+    <div>
+      <img src="http://placehold.it/900x500?text=5">
+    </div>
+    <div>
+      <img src="http://placehold.it/900x500?text=6">
+    </div>
+
+  </section>-->
+
+  <?php
+echo $this->getLayout()
+          ->createBlock('Magento\Cms\Block\Block')
+          ->setBlockId('banner_slider')
+          ->toHtml();
+?> 
+

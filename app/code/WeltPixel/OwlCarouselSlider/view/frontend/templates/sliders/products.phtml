@@ -56,10 +56,10 @@ $breakpoint   = $this->getBreakpointConfiguration();
                             <?php /* @escapeNotVerified */ echo $this->getProductPrice($product); ?>
                         <?php endif; ?>
 <div class="hotdeals-review">
-                                <?php echo $block->getReviewsSummaryHtml($product, 'short',true); ?>
+                                <?php //echo $block->getReviewsSummaryHtml($product, 'short',true); ?>
                                 </div>
  <?php 
-/*$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $reviewFactory = $objectManager->create('Magento\Review\Model\Review');
 
 $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
@@ -72,7 +72,7 @@ $reviewFactory->getEntitySummary($product, $storeId);
 
 
 $_ratingSummary = $product->getRatingSummary()->getRatingSummary();
-        $_reviewCount = $_item->getRatingSummary()->getReviewsCount();
+        $_reviewCount = $product->getRatingSummary()->getReviewsCount();
 
  if($_ratingSummary){ ?>
     <div class="product-reviews-summary short">
@@ -85,7 +85,7 @@ $_ratingSummary = $product->getRatingSummary()->getRatingSummary();
             <?php echo __('('.$_reviewCount.')'); ?>
         </div>-->
     </div>
-    <?php }*/ ?>
+    <?php } ?>
 
                         <div class="product-item-inner">
                             <div class="product actions product-item-actions">

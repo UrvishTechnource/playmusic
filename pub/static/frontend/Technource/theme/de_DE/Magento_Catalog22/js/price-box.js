@@ -70,6 +70,7 @@ define([
          * @param {Object} newPrices
          */
         updatePrice: function updatePrice(newPrices) {
+
             var prices = this.cache.displayPrices,
                 additionalPrice = {},
                 pricesCode = [],
